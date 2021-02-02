@@ -40,7 +40,7 @@ color.addEventListener('change', () => {
     currentColor = color.value;
     paint();
     currentButton = 'changed';
-})
+});
 
 colorBlack.addEventListener('click', () => {
     currentColor = "black";
