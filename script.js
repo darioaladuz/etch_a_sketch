@@ -2,10 +2,6 @@ const container = document.querySelector('#container');
 const clear = document.querySelector('#clear');
 const input = document.querySelector('#grid-number');
 const color = document.querySelector('#color-picker');
-const colorBlack = document.querySelector('#color-black');
-const greyScale = document.querySelector('#color-greyscale');
-const rainbow = document.querySelector('#color-rainbow');
-const eraser = document.querySelector('#eraser')
 
 let currentButton = 'black';
 let currentColor = "black";
@@ -20,9 +16,26 @@ function createGrid(number) {
     }
 }
 
+function chooseColor() {
+    switch(currentButton) {
+        case 'rainbow':
+            currentColor = `hsl(${Math.round(Math.random() * 360)}, 100%, 50%)`;
+            break;
+        case 'black':
+            currentColor = 'black';
+            break;
+        case 'eraser':
+            currentColor = 'white';
+    }
+}
+
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', () => currentButton = button.id))
+
 function paint() {
     const allItems = document.querySelectorAll('.divItem');
     allItems.forEach(item => item.addEventListener('mouseover', () => {
+        chooseColor();
         item.style.background = currentColor;
     }))
 }
@@ -39,40 +52,14 @@ input.addEventListener('input', () => {
 color.addEventListener('change', () => {
     currentColor = color.value;
     paint();
-    currentButton = 'changed';
+    currentButton = 'color-picker';
 });
-
-colorBlack.addEventListener('click', () => {
-    currentColor = "black";
-    paint();
-    currentButton = 'black';
-})
-
-rainbow.addEventListener('click', () => {
-    currentButton = 'rainbow';
-    currentColor = `hsl(${Math.round(Math.random() * 360)}, 100%, 50%)`
-    if (currentButton === 'rainbow') {
-        const allItems = document.querySelectorAll('.divItem');
-        allItems.forEach(item => item.addEventListener('mouseover', () => {
-            currentColor = `hsl(${Math.round(Math.random() * 360)}, 100%, 50%)`
-            paint();
-    }))
-    }
-})
 
 clear.addEventListener('click', () => {
     const allItems = document.querySelectorAll('.divItem');
     allItems.forEach(item => item.style.background = "#fff");
     currentColor = 'black';
 })
-
-eraser.addEventListener('click', () => {
-    currentColor = "white";
-    paint();
-    currentButton = 'white';
-})
-
-
 
 createGrid(20);
 paint();
